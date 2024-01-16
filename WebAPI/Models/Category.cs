@@ -1,24 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPI.Models
 {
-    [Table("Category")]   
-    
-    public class Category
+    [Table("tb_Category")]
+    public class Category : CommonAbstract
     {
+        public Category()
+        {
+            this.News = new HashSet<News>();
+        }
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public string CategoryAlias { get; set; }
+        [Required(ErrorMessage = "Tên danh mục không để trống")]
+        [StringLength(150)]
+        public string Title { get; set; }
+        public string Alias { get; set; }
+        //[StringLength(150)]
+        //public string TypeCode { get; set; }
+        public string Link { get; set; }
+        public string Description { get; set; }
 
-        [Required]
-        public string CategoryName { get; set; }
-        [Required(ErrorMessage = "Category Name is required")]
-        [StringLength(100, ErrorMessage = "Category Name cannot be longer than 100 characters")]
-        public string CategoryDescription { get; set; }
-
-        public List<Product> Products { get; set; } 
+        [StringLength(150)]
+        public string SeoTitle { get; set; }// seo tu khoa cho google
+        [StringLength(250)]
+        public string SeoDescription { get; set; }
+        [StringLength(150)]
+        public string SeoKeywords { get; set; }
+        public bool IsActive { get; set; }
+        public int Position { get; set; }
+        public ICollection<News> News { get; set; }
+        public ICollection<Posts> Posts { get; set; }
     }
 }
